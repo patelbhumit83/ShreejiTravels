@@ -32,9 +32,25 @@ public class EmployeeController {
 
     // get Employee by Id rest api
     @GetMapping("/employees/{id}")
+    @CrossOrigin
     public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id ) {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFound("Employee Not Exist with id :- " + id ));
         return ResponseEntity.ok(employee);
+    }
+
+    //update Employee Rest API
+    @PutMapping("/employees/{id}")
+    @CrossOrigin
+    public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee employeeDetail) {
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Employee Not Exist with id :- " + id ));
+
+        employee.setFirstName(employeeDetail.getFirstName());
+        employee.setLastName(employeeDetail.getLastName());
+        employee.setEmailId(employeeDetail.getEmailId());
+        Employee updatedEmployee = employeeRepository.save(employee);
+
+        return ResponseEntity.ok(updatedEmployee);
     }
 }
