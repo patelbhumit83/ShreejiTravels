@@ -29,4 +29,9 @@ export class EmployeeService {
     let url = this.baseUrl + "/"+id;
     return this.httpClient.put<Employee>(url,employee);
   }
+
+  deleteEmployee(id : Number): Observable<Object>{
+    let url = this.baseUrl + "/"+id;
+    return this.httpClient.delete(url);
+  }
 }
