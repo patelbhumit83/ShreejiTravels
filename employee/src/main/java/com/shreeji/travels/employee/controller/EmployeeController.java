@@ -1,8 +1,10 @@
 package com.shreeji.travels.employee.controller;
 
+import com.shreeji.travels.employee.exception.ResourceNotFound;
 import com.shreeji.travels.employee.model.Employee;
 import com.shreeji.travels.employee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,5 +28,13 @@ public class EmployeeController {
     @CrossOrigin
     public Employee createEmployee(@RequestBody Employee employee) {
         return employeeRepository.save(employee);
+    }
+
+    // get Employee by Id rest api
+    @GetMapping("/employees/{id}")
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id ) {
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Employee Not Exist with id :- " + id ));
+        return ResponseEntity.ok(employee);
     }
 }
